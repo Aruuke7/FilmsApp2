@@ -27,14 +27,10 @@ import retrofit2.Response;
 public class FilmsFragment extends Fragment implements OnItemClick{
     private FragmentFilmsBinding binding;
     private FilmsAdapter adapter;
-    private NavController navController;
 
-
-    public FilmsFragment() {
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         adapter = new FilmsAdapter(this);
         binding = FragmentFilmsBinding.inflate(inflater,container,false);
@@ -45,14 +41,13 @@ public class FilmsFragment extends Fragment implements OnItemClick{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.recycler.setAdapter(adapter);
-
         fetchFilms();
     }
 
     private void fetchFilms() {
         App.api.getFilms().enqueue(new Callback<List<Film>>() {
             @Override
-            public void onResponse(Call<List<Film>> call, Response<List<Film>> response) {
+            public void onResponse(@NonNull Call<List<Film>> call, @NonNull Response<List<Film>> response) {
                 if (response.isSuccessful() && response.body() != null){
                     adapter.setFilms(response.body());
                 }else {
@@ -61,7 +56,7 @@ public class FilmsFragment extends Fragment implements OnItemClick{
             }
 
             @Override
-            public void onFailure(Call<List<Film>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Film>> call, @NonNull Throwable t) {
                 Log.d("TAG", "onFailure: "+ t.getLocalizedMessage());
             }
         });
@@ -69,7 +64,7 @@ public class FilmsFragment extends Fragment implements OnItemClick{
 
     @Override
     public void onClick(String id) {
-        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         Bundle bundle = new Bundle();
         bundle.putString("id",id);
         navController.navigate(R.id.detailFragment,bundle);

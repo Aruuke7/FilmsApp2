@@ -20,7 +20,6 @@ public class Film {
     @SerializedName("movie_banner")
     String movieBanner;
 
-
     public String getMovieBanner() {
         return movieBanner;
     }

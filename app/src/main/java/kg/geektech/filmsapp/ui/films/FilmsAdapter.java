@@ -3,10 +3,10 @@ package kg.geektech.filmsapp.ui.films;
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 import kg.geektech.filmsapp.data.models.Film;
@@ -14,7 +14,7 @@ import kg.geektech.filmsapp.databinding.ItemRecBinding;
 
 public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.ViewHolder> {
     private List<Film> films = new ArrayList<>();
-    private OnItemClick listener;
+    private final OnItemClick listener;
 
     public FilmsAdapter(OnItemClick listener) {
         this.listener = listener;
@@ -35,12 +35,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull FilmsAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.onBind(films.get(position));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClick(films.get(position).getId());
-            }
-        });
+        holder.itemView.setOnClickListener(v -> listener.onClick(films.get(position).getId()));
 
     }
 
@@ -62,7 +57,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.ViewHolder> 
             Log.d("TAG", "onBind: "+ film.getTitle());
             binding.desc.setText(film.getDescription());
             Log.d("TAG", "onBind: "+ film.getDescription());
-
+            Glide.with(binding.image).load(film.getImage()).into(binding.image);
         }
     }
 }
